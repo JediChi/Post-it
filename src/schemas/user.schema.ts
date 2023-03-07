@@ -1,7 +1,12 @@
 import Joi from "joi";
 
 export const CreateUserSchema = Joi.object({
-  name: Joi.string().min(3).max(20).lowercase().trim().required(),
+  name: Joi.string()
+  .min(3)
+  .max(20)
+  .lowercase()
+  .trim()
+  .required(),
   email: Joi.string()
     .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } })
     .trim()
