@@ -1,36 +1,11 @@
-import mongoose, { Model, Schema } from "mongoose";
+import mongoose, { Model, Schema, Document } from "mongoose";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import ICreateUser from "../interfaces/user.interface";
+import { IUser } from "../interfaces/user.interface";
+import  {
+  generateRandomAvatar,
+} from "../avatar_styles/avatar.styles";
 
-const generateRandomAvatar = async  (email: string) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  
-    const _email = email.replace(" ", "");
-  
-    const isValidEmail = emailRegex.test(_email);
-    if (!isValidEmail) {
-      throw new Error("Invalid email");
-    }
-  
-    const entropySource = () => Math.random().toString(36).substring(2, 7);
-  
-    const replaceAt = `-${entropySource()}-`;
-    const replaceDot = `-${entropySource()}-`;
-  
-    const seed = _email.replace("@", replaceAt).replace(".", replaceDot);
-  
-    const randomAvatarStyle = getRandomAvatarStyle(avatarStyles);
-  
-    if (!randomAvatarStyle || !avatarStyles.includes(randomAvatarStyle)) {
-      // console.error('Invalid avatar style') // log this error to the console
-      throw new Error("Something failed: ");
-    }
-  
-    const avatarUrl = `https://api.dicebear.com/5.x/${randomAvatarStyle}/svg?seed=${seed}&size=200&radius=50`;
-  
-    return avatarUrl;
-  };
 
 const userSchema: Schema = new Schema(
   {
@@ -53,9 +28,10 @@ const userSchema: Schema = new Schema(
       trim: true,
     },
     avatar: {
-      type: String,
-    //   function() { return generateRandomAvatar(this.email) } ,
-    //   required: true,
+      type: String
+    },
+    img: {
+      type: String
     },
     tokens: [
       {
@@ -90,27 +66,23 @@ userSchema.methods.generateAuthToken = async function () {
   return token;
 };
 
-userSchema.pre('save', function(next) {
-    this.avatar = generateRandomAvatar(this.email);
-    next();
-  });
-
 userSchema.pre("save", async function (next) {
   const user = this;
-  if (user.isModified("password")) {
+  
+  if (user.isModified("password") || user.isNew) {
     user.password = await bcrypt.hash(user.password, 8);
   }
+  const avatarUrl = await generateRandomAvatar(user.email);
+  const imgTag = `<img src="${avatarUrl}" alt="Avatar">`;
+  user.avatar = avatarUrl;
+  user.img = imgTag;
+
   next();
+  
 });
 
-userSchema.set("toJSON", {
-  versionKey: false,
 
-  transform(doc, ret) {
-    delete ret.__v;
-  },
-});
 
-export const User = mongoose.model<ICreateUser>("User", userSchema);
+export const User = mongoose.model<IUser>("User", userSchema);
 
 export default User;
