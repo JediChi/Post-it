@@ -14,8 +14,15 @@ class UserService {
     async loginUser(email: string, password: string) {
         const user = await User.findByCredentials(email, password)
         const token = await user.generateAuthToken()
-        return { user, token};
-      }
+        return { user,token };
+    }
+
+    async getAllUsers() {
+        const users = await User.find();
+
+        return users.map(user => user.toJSON());
+    }
+    
 }
 
 export default new UserService();

@@ -29,6 +29,27 @@ class UserController {
       data: loginUser,
     });
   }
+
+  async me(req: Request, res: Response) {
+
+    return res.status(200).send({
+      success: true,
+      message: "User listed successfully",
+      data: req.user
+    });
+  }
+
+  async getAll(req: Request, res:Response) {
+    const users = await userService.getAllUsers();
+
+    return res.status(201).send({
+      success: true,
+      message: "Users listed successfully",
+      data: users,
+    });
+  }
+
+
 }
 
 export default new UserController();
