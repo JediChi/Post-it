@@ -19,25 +19,13 @@ const validator =
 
       return next();
     } catch (error: any) {
-    //   const { type = "pattern_string", message = "error" } = { ...error.details[0] };
+      const { type = "pattern_string", message = "error" } = { ...error.details[0] };
 
-    //   const isPatternError =
-    //     type === "string.pattern.base" || type.startsWith("string.pattern");
-
-    //   if (isPatternError) {
-    //     // const shownError = 'Custom message for pattern errors';
-    //     // // This helps to the actual error message
-    //     // logger.error('', { shownError, error });
-    //     // return res.status(400).send({
-    //     //   success: false,
-    //     //   message: shownError
-    //     // });
-    //   }
 
       return res.status(400).send({
         success: false,
         // remove double quotes and escape characters from the message, e.g. \"username\" => Username
-        message: "Validation failed"
+        message: _.capitalize(message.replaceAll('"', "")),
       });
     }
   };

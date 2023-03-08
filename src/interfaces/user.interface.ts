@@ -1,12 +1,21 @@
-interface ICreateUser {
+export interface IUser {
     name: string;
     email: string;
     password: string;
     tokens: {
         token: string;
       }[],
-    avatar: Function;
+    avatar: String;
     generateAuthToken(): Promise<string>,
 }
 
-export default ICreateUser
+export interface ICreateUser {
+  name: string;
+  email: string;
+  password: string;
+  avatar?: String;
+}
+
+export interface IUpdateUser extends Partial<ICreateUser> {
+  age: number;
+}
