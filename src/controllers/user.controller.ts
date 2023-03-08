@@ -11,6 +11,24 @@ class UserController {
       data: newUser,
     });
   }
+
+  async login(req: Request, res: Response) {
+    const loginUser = await userService.loginUser(
+      req.body.email,
+      req.body.password
+    );
+    if (!loginUser) {
+      return res.status(404).send({
+        success: false,
+        message: "User not found",
+      });
+    }
+    return res.header("x-auth-header-token",loginUser.token).status(200).send({
+      success: true,
+      message: "User logged in successfully",
+      data: loginUser,
+    });
+  }
 }
 
 export default new UserController();
