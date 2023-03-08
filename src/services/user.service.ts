@@ -1,4 +1,4 @@
-import { ICreateUser } from "../interfaces/user.interface";
+import { ICreateUser, IUpdateUser } from "../interfaces/user.interface";
 import { Model } from "mongoose";
 import User from "../models/user.model";
 
@@ -22,6 +22,15 @@ class UserService {
 
         return users.map(user => user.toJSON());
     }
+
+    async updateMe(_user: any, update: Partial<IUpdateUser>) {
+        const user = await User.find(_user, update, {
+          new: true,
+          runValidators: true,
+        });
+    
+        return user.map(user => user.toJSON());
+      }
     
 }
 

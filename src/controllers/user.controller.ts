@@ -49,7 +49,15 @@ class UserController {
     });
   }
 
+  async update(req: Request, res: Response) {
+    const updatedUser = await userService.updateMe(req.user, req.body);
 
+    return res.status(200).send({
+      success: true,
+      message: "User updated successfully",
+      data: updatedUser,
+    });
+  }
 }
 
 export default new UserController();
