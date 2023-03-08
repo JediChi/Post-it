@@ -1,3 +1,5 @@
+import  "express-async-errors";
+
 import { logger } from "./middlewares/index.middleware";
 
 import app from "./app";
