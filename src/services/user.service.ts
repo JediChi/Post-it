@@ -10,6 +10,12 @@ class UserService {
 
         return { ...user.toJSON(), token };
     }
+
+    async loginUser(email: string, password: string) {
+        const user = await User.findByCredentials(email, password)
+        const token = await user.generateAuthToken()
+        return { user, token};
+      }
 }
 
 export default new UserService();

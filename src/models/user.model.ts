@@ -6,6 +6,9 @@ import  {
   generateRandomAvatar,
 } from "../avatar_styles/avatar.styles";
 
+interface ILoginModel extends Model<IUser> {
+  findByCredentials(email: string, password: string): Promise<IUser>
+}
 
 const userSchema: Schema = new Schema(
   {
@@ -66,6 +69,18 @@ userSchema.methods.generateAuthToken = async function () {
   return token;
 };
 
+userSchema.statics.findByCredentials = async (email, password) => {
+  const user = await User.findOne({email})
+  if (!user) {
+    throw new Error("Unable to login")
+  }
+  const isMatchPassword: boolean = await bcrypt.compare(password, user.password)
+  if (!isMatchPassword) {
+    throw new Error("Unable to login")
+  }
+  return user;
+}
+
 userSchema.pre("save", async function (next) {
   const user = this;
   
@@ -83,6 +98,6 @@ userSchema.pre("save", async function (next) {
 
 
 
-export const User = mongoose.model<IUser>("User", userSchema);
+export const User = mongoose.model<IUser, ILoginModel>("User", userSchema);
 
 export default User;
