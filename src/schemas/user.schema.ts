@@ -20,3 +20,18 @@ export const CreateUserSchema = Joi.object({
     .trim()
     .required(),
 });
+
+export const LoginSchema = Joi.object({
+  email: Joi.string()
+    .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } })
+    .trim()
+    .lowercase()
+    .required(),
+  password: Joi.string()
+    .pattern(new RegExp("^[a-zA-Z0-9]{3,30}$"))
+    .min(7)
+    .max(250)
+    .lowercase()
+    .trim()
+    .required(),
+})
