@@ -43,6 +43,16 @@ class PostController {
       data: posts,
     });
   }
+
+  async update(req: Request, res: Response) {
+    const updatedPost = await postitService.updatePost(req.user._id, req.body)
+
+    return res.status(200).send({
+      success: true,
+      message: "Post updated successfully",
+      data: updatedPost,
+    });
+  }
 }
 
 export default new PostController();

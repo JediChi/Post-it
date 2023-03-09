@@ -1,5 +1,5 @@
 import { Types } from "mongoose";
-import { ICreatePost } from "../interfaces/postit.interface";
+import { ICreatePost, IUpdatePost } from "../interfaces/postit.interface";
 import Post from "../models/postit.model";
 
 class PostService {
@@ -16,9 +16,19 @@ class PostService {
   }
 
   async getPostById(_id: Types.ObjectId, author: Types.ObjectId) {
-    console.log("logging id",_id, author)
     const post = await Post.findOne({ _id, author, isDeleted: false });
-    console.log("logging post",post);
+
+    return post;
+  }
+
+  async updatePost(_post: Partial<ICreatePost>, update: Partial<IUpdatePost>) {
+    const post = await Post.findOneAndUpdate({ _id: _post._id, author: _post.author}, update, {
+        new: true,
+        runValidators: true
+    });
+
+    await Post.softDelete();
+
     return post;
   }
 
