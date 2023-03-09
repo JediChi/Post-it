@@ -17,6 +17,10 @@ const postSchema: Schema = new Schema({
         ref: "User",
         required: true
     },
+    isDeleted:{
+        type: Boolean,
+        default: false
+    },
     text: {
         type: String,
         trim: true
@@ -37,6 +41,24 @@ const postSchema: Schema = new Schema({
     }],
     
 });
+
+postSchema.methods.toJSON = function () {
+    const post = this;
+    const postData = post.toObject();
+
+    delete postData.isDeleted;
+  
+    return postData;
+  };
+
+postSchema.statics.softDelete = async function(id: string) {
+    const post = this
+    const result = await post.findById(id, { isDeleted: true }, { new: true });
+    
+    return result;
+  
+    
+  };
 
 export const Post = mongoose.model<ICreatePost>("Post", postSchema);
 

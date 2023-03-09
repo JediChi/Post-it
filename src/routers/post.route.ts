@@ -8,5 +8,9 @@ import { CreatePost } from "../schemas/postit.schema";
 const postRouter = express.Router();
 
 postRouter.post("/", auth, upload.single("file"), validator(CreatePost), postitController.create.bind(postitController));
+postRouter.get("/", auth, postitController.getAllPosts);
+
+postRouter.get("/:id", auth, postitController.getOne.bind(postitController));
+
 
 export default postRouter;
