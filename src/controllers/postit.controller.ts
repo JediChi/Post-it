@@ -53,6 +53,15 @@ class PostController {
       data: updatedPost,
     });
   }
+
+  async delete(req: Request, res: Response) {
+    await postitService.delete(req.user._id)
+
+    return res.status(200).send({
+      success: true,
+      message: "Post deleted successfully",
+    });
+  }
 }
 
 export default new PostController();

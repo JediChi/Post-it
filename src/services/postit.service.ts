@@ -32,6 +32,12 @@ class PostService {
     return post;
   }
 
+  async delete(_post: any) {
+    await Post.findOneAndRemove({_id: _post._id, author: _post.author});
+
+    await Post.softDelete(_post);
+  }
+
 }
 
 export default new PostService();
