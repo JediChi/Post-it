@@ -19,7 +19,7 @@ class UserService {
     }
 
     async getAllUsers() {
-        const users = await User.find();
+        const users = await User.find({ isDeleted: false });
 
         return users.map(user => user.toJSON());
     }
@@ -29,6 +29,7 @@ class UserService {
           new: true,
           runValidators: true,
         });
+        await User.softDelete();
     
         return user;
       }

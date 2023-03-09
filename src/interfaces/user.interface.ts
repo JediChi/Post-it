@@ -10,6 +10,8 @@ export interface IUser {
       }[],
     avatar: String;
     generateAuthToken(): Promise<string>,
+    isDeleted: boolean,
+  softDelete(isDeleted?: boolean): Promise<IUser>;
 }
 
 export interface ICreateUser {
@@ -20,5 +22,7 @@ export interface ICreateUser {
 }
 
 export interface IUpdateUser extends Partial<ICreateUser> {
+  isDeleted: boolean,
+  softDelete(isDeleted?: boolean): Promise<IUpdateUser>;
   age: number;
 }

@@ -7,7 +7,9 @@ import  {
 } from "../avatar_styles/avatar.styles";
 
 interface ILoginModel extends Model<IUser> {
-  findByCredentials(email: string, password: string): Promise<IUser>
+  findByCredentials(email: string, password: string): Promise<IUser>,
+  isDeleted: boolean,
+  softDelete(isDeleted?: boolean): Promise<IUser>;
 }
 
 const userSchema: Schema = new Schema(
@@ -36,6 +38,10 @@ const userSchema: Schema = new Schema(
     img: {
       type: String
     },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
     tokens: [
       {
         token: {
@@ -55,6 +61,7 @@ userSchema.methods.toJSON = function () {
 
   delete userData.password;
   delete userData.tokens;
+  delete userData.isDeleted;
 
   return userData;
 };
@@ -80,6 +87,15 @@ userSchema.statics.findByCredentials = async (email, password) => {
   }
   return user;
 }
+
+userSchema.statics.softDelete = async function(id: string) {
+  const user = this
+  const result = await user.findById(id, { isDeleted: true }, { new: true });
+  
+  return result;
+
+  
+};
 
 userSchema.pre("save", async function (next) {
   const user = this;
