@@ -16,4 +16,6 @@ userRouter.get("/allUsers", auth, userController.getAll);
 
 userRouter.patch("/UpdateMe", [validator(UpdateUserSchema)], auth,  userController.update);
 
+userRouter.delete("/me", auth, userController.delete);
+
 export default userRouter
