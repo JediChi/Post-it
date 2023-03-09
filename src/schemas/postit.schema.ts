@@ -9,8 +9,7 @@ export const CreatePost = Joi.object({
     description: Joi.string()
     .min(0)
     .max(255)
-    .trim()
-    .required(),
+    .trim(),
     author: Joi.string().hex().trim().required().length(24),
     text: Joi.string()
     .trim(),

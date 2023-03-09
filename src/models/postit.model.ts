@@ -5,11 +5,11 @@ const postSchema: Schema = new Schema({
     title: {
         type: String,
         required: true,
-        trim: true
+        trim: true,
+        unique: true,
     },
     description: {
         type: String,
-        required: true,
         trim: true
     },
     author: {
@@ -18,6 +18,10 @@ const postSchema: Schema = new Schema({
         required: true
     },
     text: {
+        type: String,
+        trim: true
+    },
+    image: {
         type: String,
         trim: true
     },
