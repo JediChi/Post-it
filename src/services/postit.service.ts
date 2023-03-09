@@ -10,16 +10,18 @@ class PostService {
 
     return post;
   }
+  async getAllPosts(author: Types.ObjectId) {
+    const posts = await Post.find({ author, isDeleted: false });
+    return posts;
+  }
 
-  async getPostById(_id: Types.ObjectId, _author: Types.ObjectId) {
-    const post = await Post.findOne({ _id, _author, isDeleted: false });
+  async getPostById(_id: Types.ObjectId, author: Types.ObjectId) {
+    console.log("logging id",_id, author)
+    const post = await Post.findOne({ _id, author, isDeleted: false });
+    console.log("logging post",post);
     return post;
   }
 
-  async getAllPosts(_author: Types.ObjectId) {
-    const posts = await Post.find({ isDeleted: false });
-    return posts;
-  }
 }
 
 export default new PostService();

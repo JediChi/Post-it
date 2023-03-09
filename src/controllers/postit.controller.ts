@@ -20,7 +20,9 @@ class PostController {
 
   async getOne(req: Request, res: Response) {
     const _id  = new mongoose.Types.ObjectId(req.params.id)
-    const author = new mongoose.Types.ObjectId(req.user._id)
+    console.log("logging id", _id)
+    const author = (req.user._id)
+    console.log("logging user", author)
     const post = await postitService.getPostById(_id, author);
 
     return res.status(200).send({
@@ -31,7 +33,8 @@ class PostController {
   }
 
   async getAllPosts(req: Request, res: Response) {
-    const author = new mongoose.Types.ObjectId(req.user._id);
+    const author = (req.user._id);
+    console.log(author)
     const posts = await postitService.getAllPosts(author);
 
     return res.status(200).send({

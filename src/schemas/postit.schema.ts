@@ -10,7 +10,7 @@ export const CreatePost = Joi.object({
     .min(0)
     .max(255)
     .trim(),
-    author: Joi.string().hex().trim().required().length(24),
+    author: Joi.string().hex().trim().required(),
     text: Joi.string()
     .trim(),
     image: Joi.string()
@@ -19,5 +19,5 @@ export const CreatePost = Joi.object({
     .trim(),
     audio: Joi.string()
     .trim(),
-    comments: Joi.string().hex().trim().optional().length(24),
+    comments: Joi.string().hex().trim().optional(),
 })
