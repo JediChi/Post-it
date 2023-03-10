@@ -20,4 +20,15 @@ export const CreatePost = Joi.object({
     audio: Joi.string()
     .trim(),
     comments: Joi.string().hex().trim().optional(),
+});
+
+export const UpdatePost = Joi.object({
+    title: Joi.string().trim(),
+    description: Joi.string().trim(),
+    text: Joi.string().trim(),
+    image: Joi.string().trim(),
+    video: Joi.string().trim(),
+    audio: Joi.string()
+    .trim(),
+    comments: Joi.string().hex().trim().optional(),
 })

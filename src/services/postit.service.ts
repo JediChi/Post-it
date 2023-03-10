@@ -1,5 +1,5 @@
 import { Types } from "mongoose";
-import { ICreatePost } from "../interfaces/postit.interface";
+import { ICreatePost, IUpdatePost } from "../interfaces/postit.interface";
 import Post from "../models/postit.model";
 
 class PostService {
@@ -15,10 +15,37 @@ class PostService {
     return posts;
   }
 
-  async getPostById(_id: Types.ObjectId, author: Types.ObjectId) {
-    console.log("logging id",_id, author)
-    const post = await Post.findOne({ _id, author, isDeleted: false });
-    console.log("logging post",post);
+  async getPostById(filter: Partial<ICreatePost>) {
+    const post = await Post.findOne({ ...filter });
+    // console.log(post)
+    return post;
+  }
+
+  async findOneOrFail(filter: Partial<ICreatePost>) {
+    const post = await Post.findOne({ ...filter, isDeleted: false });
+    
+    if (!post) {
+      throw new Error('No post found')
+    }
+    return post;
+  }
+
+  async updatePost(filter: Partial<ICreatePost>, update: Partial<IUpdatePost>) {
+    const post = await Post.findOneAndUpdate(filter, update, {
+        new: true,
+        runValidators: true
+    });
+
+    return post;
+  }
+
+  async delete(filter: Partial<ICreatePost>) {
+    const post: ICreatePost | null | undefined = await Post.findOneAndUpdate(filter, { isDeleted: true }, {
+      runValidators: true
+    });
+
+    console.log(post)
+
     return post;
   }
 

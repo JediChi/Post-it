@@ -29,7 +29,6 @@ class UserService {
       new: true,
       runValidators: true,
     });
-    await User.softDelete();
 
     return user;
   }
