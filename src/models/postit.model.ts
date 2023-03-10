@@ -59,9 +59,9 @@ postSchema.methods.toJSON = function () {
 
 postSchema.statics.softDelete = async function(id: string) {
     const post = this
-    const result = await post.findById(id, { isDeleted: true }, { new: true });
+    // const result = await post.findOneAndUpdate(id, { isDeleted: true }, { new: true });
     
-    return result;
+    return 'result';
   
     
   };

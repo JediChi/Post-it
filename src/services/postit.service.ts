@@ -15,27 +15,38 @@ class PostService {
     return posts;
   }
 
-  async getPostById(_id: Types.ObjectId, author: Types.ObjectId) {
-    const post = await Post.findOne({ _id, author, isDeleted: false });
-
+  async getPostById(filter: Partial<ICreatePost>) {
+    const post = await Post.findOne({ ...filter });
+    // console.log(post)
     return post;
   }
 
-  async updatePost(_post: Partial<ICreatePost>, update: Partial<IUpdatePost>) {
-    const post = await Post.findOneAndUpdate({ _id: _post._id, author: _post.author}, update, {
+  async findOneOrFail(filter: Partial<ICreatePost>) {
+    const post = await Post.findOne({ ...filter, isDeleted: false });
+    
+    if (!post) {
+      throw new Error('No post found')
+    }
+    return post;
+  }
+
+  async updatePost(filter: Partial<ICreatePost>, update: Partial<IUpdatePost>) {
+    const post = await Post.findOneAndUpdate(filter, update, {
         new: true,
         runValidators: true
     });
 
-    await Post.softDelete();
-
     return post;
   }
 
-  async delete(_post: any) {
-    await Post.findOneAndRemove({_id: _post._id, author: _post.author});
+  async delete(filter: Partial<ICreatePost>) {
+    const post: ICreatePost | null | undefined = await Post.findOneAndUpdate(filter, { isDeleted: true }, {
+      runValidators: true
+    });
 
-    await Post.softDelete(_post);
+    console.log(post)
+
+    return post;
   }
 
 }
