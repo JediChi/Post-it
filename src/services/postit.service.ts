@@ -20,7 +20,7 @@ class PostService {
         model: "User",
         select: "_id",
       },
-    });
+    }).sort({ createdAt: -1 }).exec();
     return posts;
     // const posts = await Post.find({ author, isDeleted: false });
     // return posts;

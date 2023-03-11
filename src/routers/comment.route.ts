@@ -9,4 +9,8 @@ const commentRouter = express.Router();
 
 commentRouter.post("/", auth, validator(CreateComment), commentController.create);
 
+commentRouter.get("/", auth, commentController.getAll)
+
+commentRouter.get("/:id", auth, commentController.getOne)
+
 export default commentRouter
