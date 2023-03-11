@@ -46,7 +46,13 @@ const postSchema: Schema = new Schema({
         ref: "Comment"
     }],
     
-});
+}, { timestamps: true });
+
+postSchema.virtual("comment", {
+    ref: "Comment",
+    localField: "_id",
+    foreignField: "post"
+})
 
 postSchema.methods.toJSON = function () {
     const post = this;
@@ -57,14 +63,6 @@ postSchema.methods.toJSON = function () {
     return postData;
   };
 
-postSchema.statics.softDelete = async function(id: string) {
-    const post = this
-    // const result = await post.findOneAndUpdate(id, { isDeleted: true }, { new: true });
-    
-    return 'result';
-  
-    
-  };
 
 export const Post = mongoose.model<ICreatePost, IPost>("Post", postSchema);
 

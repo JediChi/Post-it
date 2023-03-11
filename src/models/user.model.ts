@@ -54,6 +54,12 @@ const userSchema: Schema = new Schema(
   { timestamps: true }
 );
 
+
+userSchema.virtual("posts", {
+  ref: "Post",
+  localField: "_id",
+  foreignField: "author",
+});
 // this method deletes the sensitive information and returns non-sensitive to the user
 userSchema.methods.toJSON = function () {
   const user = this;
