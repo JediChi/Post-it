@@ -44,8 +44,9 @@ class PostController {
 
   async getAllPosts(req: Request, res: Response) {
     const author = (req.user._id);
-    console.log(author)
     const posts = await postitService.getAllPosts(author);
+
+    // const posts = await req.user.populate("posts").execPopulate()
 
     return res.status(200).send({
       success: true,

@@ -11,8 +11,19 @@ class PostService {
     return post;
   }
   async getAllPosts(author: Types.ObjectId) {
-    const posts = await Post.find({ author, isDeleted: false });
+    const posts = await Post.find({ author, isDeleted: false }).populate({
+      path: "comments",
+      model: "Comment",
+      select: "_id",
+      populate: {
+        path: "author",
+        model: "User",
+        select: "_id",
+      },
+    });
     return posts;
+    // const posts = await Post.find({ author, isDeleted: false });
+    // return posts;
   }
 
   async getPostById(filter: Partial<ICreatePost>) {
