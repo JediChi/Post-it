@@ -18,7 +18,7 @@ class CommentController {
 
     async getAll(req: Request, res: Response) {
         // const author = req.user._id
-        const post = req.params.id
+        const post = new mongoose.Types.ObjectId(req.params.id)
         const comments = await commentService.getAllComments( post);
 
         return res.status(200).send({
@@ -27,6 +27,25 @@ class CommentController {
             data: comments
         });
     }
+
+    async getOne(req: Request, res: Response) {
+        const _id  = new mongoose.Types.ObjectId(req.params.id)
+        
+        const post = new mongoose.Types.ObjectId(req.params.id)
+
+        // const author = new mongoose.Types.ObjectId(req.user._id)
+    
+        res.statusCode = 404;
+    
+        const comment = await commentService.findOneOrFail({_id, post});
+
+    
+        return res.status(200).send({
+          success: true,
+          message: "Post fetched successfully",
+          data: comment,
+        });
+      }
 }
 
 export default new CommentController();
