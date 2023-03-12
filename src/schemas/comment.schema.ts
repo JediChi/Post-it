@@ -5,3 +5,6 @@ export const CreateComment = Joi.object({
   post: Joi.string().hex().trim(),
   comment: Joi.string().trim().required(),
 });
+export const UpdateComment = Joi.object({
+  comment: Joi.string().trim().required(),
+});

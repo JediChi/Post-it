@@ -46,6 +46,21 @@ class CommentController {
           data: comment,
         });
       }
+
+      async update(req: Request, res: Response) {
+        const filter: Partial<IComment> = { 
+          _id: new Types.ObjectId(req.params.id), 
+          post: new Types.ObjectId(req.params.id)
+        }
+    
+        const updatedComment = await commentService.updateComment(filter, req.body)
+    
+        return res.status(200).send({
+          success: true,
+          message: "Post updated successfully",
+          data: updatedComment,
+        });
+      }
 }
 
 export default new CommentController();

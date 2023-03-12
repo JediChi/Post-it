@@ -41,6 +41,15 @@ class CommentService {
     }
     return comment;
   }
+
+  async updateComment(filter: Partial<IComment>, update: Partial<IComment>) {
+    const comment = await Comment.findOneAndUpdate(filter, update, {
+        new: true,
+        runValidators: true
+    });
+
+    return comment;
+  }
 }
 
 export default new CommentService();
