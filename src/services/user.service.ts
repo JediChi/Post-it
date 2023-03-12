@@ -12,6 +12,12 @@ class UserService {
     return { ...user.toJSON(), token };
   }
 
+  async findOne(email: string) {
+    const user = await User.findOne({email, isDeleted: false})
+
+    return user;
+  } 
+
   async loginUser(email: string, password: string) {
     const user = await User.findByCredentials(email, password);
     const token = await user.generateAuthToken();

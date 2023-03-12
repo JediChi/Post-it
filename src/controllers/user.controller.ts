@@ -3,6 +3,14 @@ import userService from "../services/user.service";
 
 class UserController {
   async create(req: Request, res: Response) {
+
+    const existingUser = await userService.findOne(req.user)
+
+    if (existingUser) {
+      return res.status(400).send({ 
+        success:false,
+        error: "User already exists" });
+    }
     const newUser = await userService.createUser(req.body);
 
     return res.status(201).send({
