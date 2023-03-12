@@ -33,10 +33,12 @@ class UserService {
     return user;
   }
 
-  async delete(_user: any) {
-    await User.findOneAndRemove(_user);
+  async delete(filter: Partial<IUser>) {
+    const user: IUser | null | undefined = await User.findOneAndUpdate(filter, { isDeleted: true }, {
+      runValidators: true
+    });
 
-    await User.softDelete(_user);
+    return user;
   }
 }
 

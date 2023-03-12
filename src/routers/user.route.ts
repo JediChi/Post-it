@@ -12,7 +12,7 @@ userRouter.post("/login",[validator(LoginSchema)], userController.login);
 
 userRouter.get("/me", auth, userController.me);
 
-userRouter.get("/allUsers", auth, userController.getAll);
+userRouter.get("/", auth, userController.getAll);
 
 userRouter.patch("/UpdateMe", [validator(UpdateUserSchema)], auth,  userController.update);
 

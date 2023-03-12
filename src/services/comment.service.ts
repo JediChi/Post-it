@@ -4,6 +4,7 @@ import { IComment } from "../interfaces/comment.interface";
 
 class CommentService {
   async createComment(data: IComment) {
+
     const comment = new Comment(data);
 
     return await comment.save();
@@ -11,16 +12,17 @@ class CommentService {
 
   async getAllComments(post: Types.ObjectId) {
     const comments = await Comment.find({ post, isDeleted: false })
-      .populate({
+      .populate([{
         path: "author",
         model: "User",
-        select: "_id",
-        populate: {
-          path: "posts",
-          model: "Post",
-          select: "_id",
-        },
-      })
+        select: 'name'
+      },
+      {
+        path: "post",
+        model: "Post",
+        select: "title text"
+      }
+    ])
       .sort({ createdAt: -1 })
       .exec();
 
@@ -34,7 +36,17 @@ class CommentService {
   }
 
   async findOneOrFail(filter: Partial<IComment>) {
-    const comment = await Comment.findOne({ ...filter, isDeleted: false });
+    const comment = await Comment.findOne({ ...filter, isDeleted: false }).populate([{
+      path: "author",
+      model: "User",
+      select: 'name'
+    },
+    {
+      path: "post",
+      model: "Post",
+      select: "title text"
+    }
+  ]);
 
     if (!comment) {
       throw new Error("Comment not found");
@@ -50,6 +62,15 @@ class CommentService {
 
     return comment;
   }
+
+  async delete(filter: Partial<IComment>) {
+    const comment: IComment | null | undefined = await Comment.findOneAndUpdate(filter, { isDeleted: true }, {
+      runValidators: true
+    });
+
+    return comment;
+  }
+
 }
 
 export default new CommentService();

@@ -6,10 +6,12 @@ const CommentSchema: Schema = new Schema(
     author: {
       type: Schema.Types.ObjectId,
       ref: "User",
+      required: true
     },
     post: {
       type: Schema.Types.ObjectId,
       ref: "Post",
+      required: true
     },
     comment: {
       type: String,
