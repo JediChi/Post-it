@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest",
     "build": "tsc",
-    "start": "node ./src/server.ts",
+    "start": "ts-node ./src/server.ts",
     "dev": "nodemon -r dotenv/config ./src/server.ts"
   },
   "repository": {
