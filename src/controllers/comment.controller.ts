@@ -8,7 +8,7 @@ class CommentController {
   async create(req: Request, res: Response) {
     const postId = new Types.ObjectId(req.params.postId);
 
-    const post = await postitService.getPostById(postId);
+    const post = await postitService.findPostById(postId);
 
     if (!post) {
       return res.status(404).send({
@@ -35,7 +35,7 @@ class CommentController {
 
     res.statusCode = 404;
     await commentService.findOneCommentOrFail({post})
-    
+
     const comments = await commentService.getAllComments(post);
 
     return res.status(200).send({
@@ -57,7 +57,7 @@ class CommentController {
 
     return res.status(200).send({
       success: true,
-      message: "Post fetched successfully",
+      message: "Comment fetched successfully",
       data: comment,
     });
   }
