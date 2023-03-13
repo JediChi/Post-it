@@ -2,22 +2,28 @@
 
 This API allows users to create, update and edit their accounts, create posts, and comment on posts.
 
-Base URL
+### Base URL
+
 The base URL for this API is "api/v1"
 
-Data Model
+### Data Model
+
 This models the data of the api. It can be accessed via this link: "https://dbdesigner.page.link/TBb8qRsy2zTMj9WK7"
 
-API Documentation
+### API Documentation
+
 This gives more information about the API and the various endpoints: "https://post-it-0uhq.onrender.com/api/v1/docs"
 
-API Live Link
+### API Live Link
+
 This is the live link to the API: "https://post-it-0uhq.onrender.com"
 
-Authentication
+### Authentication
+
 All API endpoints require authentication using a JSON Web Token (JWT). To authenticate, include the JWT in the Authorization header of each request
 
-Endpoints
+### Endpoints
+
 There are three resources: users, posts and comments
 
 ## USERS
