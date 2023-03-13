@@ -26,7 +26,6 @@ async getAll(req: Request, res: Response) {
     const postId = new mongoose.Types.ObjectId(req.params.postId)
 
     res.statusCode = 404;
-
     const post = await postitService.findOneOrFail({userId, postId});
 
     return res.status(200).send({
