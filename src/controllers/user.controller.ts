@@ -1,10 +1,11 @@
 import { Request, Response } from "express";
+import { IUser } from "../interfaces/user.interface";
 import userService from "../services/user.service";
 
 class UserController {
   async create(req: Request, res: Response) {
 
-    const existingUser = await userService.findOne(req.user)
+    const existingUser = await userService.findOne(req.body.email)
 
     if (existingUser) {
       return res.status(400).send({ 
@@ -35,6 +36,18 @@ class UserController {
       success: true,
       message: "User logged in successfully",
       data: loginUser,
+    });
+  }
+
+
+  async logoutAll(req: Request, res: Response) {
+    req.user.tokens = []
+
+    await req.user.save();
+
+    return res.status(200).send({
+      success: true,
+      message: "User logged out from all devices successfully",
     });
   }
 
