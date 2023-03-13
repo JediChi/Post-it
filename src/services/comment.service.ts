@@ -10,8 +10,8 @@ class CommentService {
     return await comment.save();
   }
 
-  async getAllComments(post: Types.ObjectId) {
-    const comments = await Comment.find({ post, isDeleted: false })
+  async getAllComments(filter: Partial<IComment>) {
+    const comments = await Comment.find({ ...filter, isDeleted: false })
       .populate([{
         path: "author",
         model: "User",
