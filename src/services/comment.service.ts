@@ -35,6 +35,15 @@ class CommentService {
     return comment;
   }
 
+  async findOneCommentOrFail(filter: Partial<IComment>) {
+    const comment = await Comment.findOne({ ...filter, isDeleted: false });
+    
+    if (!comment) {
+      throw new Error('No comment found');
+    }
+    return comment;
+  }
+
   async findOneOrFail(filter: Partial<IComment>) {
     const comment = await Comment.findOne({ ...filter, isDeleted: false }).populate([{
       path: "author",

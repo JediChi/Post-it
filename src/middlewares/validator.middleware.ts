@@ -25,7 +25,7 @@ const validator =
       return res.status(400).send({
         success: false,
         // remove double quotes and escape characters from the message, e.g. \"username\" => Username
-        message: _.capitalize(message.replaceAll('"', "")),
+        message: _.capitalize(message.replace('"', "")),
       });
     }
   };
