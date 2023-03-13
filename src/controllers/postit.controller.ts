@@ -8,9 +8,13 @@ class PostController {
     const imagePath = req.file ? req.file.path : null;
     const audioPath = req.file ? req.file.path : null;
     const videoPath = req.file ? req.file.path : null;
-    const newPost = await postitService.createPost(
-      { ...req.body, author: req.user._id, image: imagePath, audio: audioPath, video: videoPath}
-    );
+    const newPost = await postitService.createPost({
+      ...req.body,
+      author: req.user._id,
+      image: imagePath,
+      audio: audioPath,
+      video: videoPath,
+    });
 
     return res.status(201).send({
       success: true,
@@ -20,13 +24,13 @@ class PostController {
   }
 
   async getOne(req: Request, res: Response) {
-    const _id  = new mongoose.Types.ObjectId(req.params.id)
+    const _id = new mongoose.Types.ObjectId(req.params.id);
 
-    const author = new mongoose.Types.ObjectId(req.user._id)
+    const author = new mongoose.Types.ObjectId(req.user._id);
 
     res.statusCode = 404;
 
-    const post = await postitService.findOneOrFail({_id, author});
+    const post = await postitService.findOneOrFail({ _id, author });
 
     return res.status(200).send({
       success: true,
@@ -36,13 +40,12 @@ class PostController {
   }
 
   async getAllPosts(req: Request, res: Response) {
-    const author = (req.user._id);
+    const author = req.user._id;
 
     res.statusCode = 404;
-    await postitService.findOneOrFail({author});
+    await postitService.findOneOrFail({ author });
 
     const posts = await postitService.getAllPosts(author);
-
 
     return res.status(200).send({
       success: true,
@@ -52,15 +55,15 @@ class PostController {
   }
 
   async update(req: Request, res: Response) {
-    const filter: Partial<ICreatePost> = { 
-      _id: new Types.ObjectId(req.params.id), 
-      author: req.user._id
-    }
+    const filter: Partial<ICreatePost> = {
+      _id: new Types.ObjectId(req.params.id),
+      author: req.user._id,
+    };
 
-    // res.statusCode = 404;
-    // await postitService.findOneOrFail({_id, author});
+    res.statusCode = 404;
+    await postitService.findOneOrFail( filter );
 
-    const updatedPost = await postitService.updatePost(filter, req.body)
+    const updatedPost = await postitService.updatePost(filter, req.body);
 
     return res.status(200).send({
       success: true,
@@ -70,13 +73,12 @@ class PostController {
   }
 
   async delete(req: Request, res: Response) {
-    const filter: Partial<ICreatePost> = { 
-      _id: new Types.ObjectId(req.params.id), 
-      author: new Types.ObjectId(req.user._id)
-    }
-    console.log('here....', req.params)
-    const deletedPost = await postitService.delete(filter)
-  
+    const filter: Partial<ICreatePost> = {
+      _id: new Types.ObjectId(req.params.id),
+      author: new Types.ObjectId(req.user._id),
+    };
+    const deletedPost = await postitService.delete(filter);
+
     if (!deletedPost?._id) {
       return res.status(404).send({
         success: false,

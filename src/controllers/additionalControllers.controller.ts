@@ -25,8 +25,21 @@ async getAll(req: Request, res: Response) {
 
     const postId = new mongoose.Types.ObjectId(req.params.postId)
 
-    res.statusCode = 404;
-    const post = await postitService.findOneOrFail({userId, postId});
+    // res.statusCode = 404;
+    const post = await postitService.getPostById({userId, postId});
+
+    if (!post?.userId) {
+      return res.status(404).send({
+        success: false,
+        message: "User not found",
+      });
+    }
+    if (!post?.postId) {
+      return res.status(404).send({
+        success: false,
+        message: "Post not found",
+      });
+    }
 
     return res.status(200).send({
       success: true,
@@ -59,7 +72,7 @@ async getAll(req: Request, res: Response) {
 
     res.statusCode = 404;
 
-    const comment = await commentService.findOneOrFail({ _id, post , userId });
+    const comment = await commentService.findOneOrFail({ userId, post, _id });
 
     return res.status(200).send({
       success: true,
