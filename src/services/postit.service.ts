@@ -31,6 +31,11 @@ class PostService {
     // console.log(post)
     return post;
   }
+  async findPostById(id: Partial<ICreatePost>["_id"]) {
+    const post = await Post.findOne({ _id: id });
+    // console.log(post)
+    return post;
+  }
 
   async findOneOrFail(filter: Partial<ICreatePost>) {
     const post = await Post.findOne({ ...filter, isDeleted: false });
