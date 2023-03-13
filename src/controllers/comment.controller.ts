@@ -34,6 +34,8 @@ class CommentController {
     const post = new Types.ObjectId(req.params.postId);
 
     res.statusCode = 404;
+    await commentService.findOneCommentOrFail({post})
+    
     const comments = await commentService.getAllComments(post);
 
     return res.status(200).send({

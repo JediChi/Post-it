@@ -28,13 +28,6 @@ class PostController {
 
     const post = await postitService.findOneOrFail({_id, author});
 
-    // if(!post?._id) {
-    //   return res.status(404).send({
-    //     success: false,
-    //     message: "Post not found",
-    //   });
-    // }
-
     return res.status(200).send({
       success: true,
       message: "Post fetched successfully",
@@ -44,9 +37,12 @@ class PostController {
 
   async getAllPosts(req: Request, res: Response) {
     const author = (req.user._id);
+
+    res.statusCode = 404;
+    await postitService.findOneOrFail({author});
+
     const posts = await postitService.getAllPosts(author);
 
-    // const posts = await req.user.populate("posts").execPopulate()
 
     return res.status(200).send({
       success: true,
@@ -60,6 +56,9 @@ class PostController {
       _id: new Types.ObjectId(req.params.id), 
       author: req.user._id
     }
+
+    // res.statusCode = 404;
+    // await postitService.findOneOrFail({_id, author});
 
     const updatedPost = await postitService.updatePost(filter, req.body)
 

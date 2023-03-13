@@ -42,10 +42,10 @@ const postSchema: Schema = new Schema({
     video: {
         type: String
     },
-    // comments: [{
-    //     type: Schema.Types.ObjectId,
-    //     ref: "Comment"
-    // }],
+    comments: [{
+        type: Schema.Types.ObjectId,
+        ref: "Comment"
+    }],
     
 }, { timestamps: true });
 
