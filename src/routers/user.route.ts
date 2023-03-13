@@ -10,6 +10,8 @@ userRouter.post("/",[validator(CreateUserSchema)], userController.create);
 
 userRouter.post("/login",[validator(LoginSchema)], userController.login);
 
+userRouter.post("/logoutAll",auth, userController.logoutAll);
+
 userRouter.get("/me", auth, userController.me);
 
 userRouter.get("/", auth, userController.getAll);
