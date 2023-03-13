@@ -2,6 +2,8 @@ import { Types } from "mongoose"
 
 export interface ICreatePost{
     _id?: Types.ObjectId,
+    userId?: Types.ObjectId,
+    postId?: Types.ObjectId,
     title: string,
     description: string,
     author: Types.ObjectId,
