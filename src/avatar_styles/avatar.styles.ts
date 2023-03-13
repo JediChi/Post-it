@@ -34,7 +34,7 @@ export default function getRandomAvatarStyle(styles: string[]): string {
 export const generateRandomAvatar = async (email: string) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  const _email = email.replace(" ", "");
+  const _email = email.trim();
 
   const isValidEmail = emailRegex.test(_email);
   if (!isValidEmail) {
@@ -46,7 +46,7 @@ export const generateRandomAvatar = async (email: string) => {
   const replaceAt = `-${entropySource()}-`;
   const replaceDot = `-${entropySource()}-`;
 
-  const seed = _email.replace("@", replaceAt).replace(".", replaceDot);
+  const seed = _email.replace("@", replaceAt).replace(/\./g, replaceDot);
 
   const randomAvatarStyle = getRandomAvatarStyle(avatarStyles);
 
